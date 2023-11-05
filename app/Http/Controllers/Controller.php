@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Board;
+use App\Models\GameOfLifeBoard;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -14,10 +15,14 @@ class Controller extends BaseController
 
     public function index(Request $request)
     {
-        $boardState = $request->session()->get('board_state');
+        $sessionBoard = GameOfLifeBoard::firstOrCreate([
+            'session' => 'all',
+        ]);
+        $boardState = json_decode($sessionBoard->board_state);
         if (!$boardState) {
             $boardState = Board::getEmptyState(config('app.boardSize'));
-            $request->session()->put('board_state', $boardState);
+            $sessionBoard->board_state = json_encode($boardState);
+            $sessionBoard->save();
         }
 
         return view('index', ['board_state' => $boardState]);
@@ -27,48 +32,61 @@ class Controller extends BaseController
     {
         $x = $request->input('x');
         $y = $request->input('y');
-        $boardState = $request->session()->get('board_state');
-        if (!$boardState) {
-            $boardState = Board::getEmptyState(config('app.boardSize'));
-        }
+        $sessionBoard = GameOfLifeBoard::firstOrCreate([
+            'session' => 'all',
+        ]);
+        $boardState = $boardState = json_decode($sessionBoard->board_state);
         $board = new Board(config('app.boardSize'), $boardState);
         $board->toggleCell($x, $y);
-        $request->session()->put('board_state', $board->state);
+        $sessionBoard->board_state = json_encode($board->state);
+        $sessionBoard->save();
 
         return view('partials/board', ['board_state' => $board->state]);
     }
 
     public function next(Request $request)
     {
-        $boardState = $request->session()->get('board_state');
+        $sessionBoard = GameOfLifeBoard::firstOrCreate([
+            'session' => 'all',
+        ]);
+        $boardState = $boardState = json_decode($sessionBoard->board_state);
         if (!$boardState) {
             $boardState = Board::getEmptyState(config('app.boardSize'));
         }
         $board = new Board(config('app.boardSize'), $boardState);
         $board->iterate();
-        $request->session()->put('board_state', $board->state);
+        $sessionBoard->board_state = json_encode($board->state);
+        $sessionBoard->save();
 
         return view('partials/board', ['board_state' => $board->state]);
     }
 
     public function reset(Request $request)
     {
-        $boardState = Board::getEmptyState(config('app.boardSize'));
-        $request->session()->put('board_state', $boardState);
+        $sessionBoard = GameOfLifeBoard::firstOrCreate([
+            'session' => 'all',
+        ]);
+        $newBoardState = Board::getEmptyState(config('app.boardSize'));
+        $sessionBoard->board_state = json_encode($newBoardState);
+        $sessionBoard->save();
 
-        return view('partials/board', ['board_state' => $boardState]);
+        return view('partials/board', ['board_state' => $newBoardState]);
     }
 
     public function randomize(Request $request)
     {
-        $boardState = Board::getEmptyState(config('app.boardSize'));
-        foreach ($boardState as $x => $row) {
+        $sessionBoard = GameOfLifeBoard::firstOrCreate([
+            'session' => 'all',
+        ]);
+        $newBoardState = Board::getEmptyState(config('app.boardSize'));
+        foreach ($newBoardState as $x => $row) {
             foreach ($row as $y => $cell) {
-                $boardState[$x][$y] = !!rand(0,1);
+                $newBoardState[$x][$y] = !!rand(0,1);
             }
         }
-        $request->session()->put('board_state', $boardState);
+        $sessionBoard->board_state = json_encode($newBoardState);
+        $sessionBoard->save();
 
-        return view('partials/board', ['board_state' => $boardState]);
+        return view('partials/board', ['board_state' => $newBoardState]);
     }
 }
