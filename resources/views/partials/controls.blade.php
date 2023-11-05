@@ -9,7 +9,10 @@
             hx-target="#board"
             hx-swap="outerHTML"
         >
-            Reset
+            <span>
+                Reset
+                <img class="htmx-indicator htmx-loading" src="/img/bars.svg"/>
+            </span>
         </button>
         <button
             class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -17,7 +20,10 @@
             hx-target="#board"
             hx-swap="outerHTML"
         >
-            Randomize
+            <span>
+                Randomise
+                <img class="htmx-indicator htmx-loading" src="/img/bars.svg"/>
+            </span>
         </button>
         <button
             class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -25,7 +31,10 @@
             hx-target="#board"
             hx-swap="outerHTML"
         >
-            Next
+            <span>
+                Next
+                <img class="htmx-indicator htmx-loading" src="/img/bars.svg"/>
+            </span>
         </button>
     </div>
 </div>

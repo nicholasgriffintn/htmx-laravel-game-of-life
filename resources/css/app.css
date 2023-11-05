@@ -5,3 +5,14 @@
 #board button {
   display: block;
 }
+
+.htmx-indicator{
+    display:none;
+    margin-left: 5px;
+}
+.htmx-request .htmx-indicator{
+    display:inline;
+}
+.htmx-request.htmx-indicator{
+    display:inline;
+}
