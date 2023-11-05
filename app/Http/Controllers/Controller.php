@@ -32,6 +32,11 @@ class Controller extends BaseController
     {
         $x = $request->input('x');
         $y = $request->input('y');
+
+        if (!is_numeric($x) || !is_numeric($y) || $x < 0 || $y < 0 || $x >= config('app.boardSize') || $y >= config('app.boardSize')) {
+            return response('Invalid coordinates', 400);
+        }
+
         $sessionBoard = GameOfLifeBoard::firstOrCreate([
             'session' => 'all',
         ]);
