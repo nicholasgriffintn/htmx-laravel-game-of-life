@@ -34,7 +34,8 @@ class Controller extends BaseController
         $board = new Board(config('app.boardSize'), $boardState);
         $board->toggleCell($x, $y);
         $request->session()->put('board_state', $board->state);
-        return view('index', ['board_state' => $board->state]);
+
+        return view('partials/board', ['board_state' => $board->state]);
     }
 
     public function next(Request $request)
@@ -46,14 +47,16 @@ class Controller extends BaseController
         $board = new Board(config('app.boardSize'), $boardState);
         $board->iterate();
         $request->session()->put('board_state', $board->state);
-        return view('index', ['board_state' => $board->state]);
+
+        return view('partials/board', ['board_state' => $board->state]);
     }
 
     public function reset(Request $request)
     {
         $boardState = Board::getEmptyState(config('app.boardSize'));
         $request->session()->put('board_state', $boardState);
-        return redirect('/');
+
+        return view('partials/board', ['board_state' => $boardState]);
     }
 
     public function randomize(Request $request)
@@ -65,6 +68,7 @@ class Controller extends BaseController
             }
         }
         $request->session()->put('board_state', $boardState);
-        return redirect('/');
+
+        return view('partials/board', ['board_state' => $boardState]);
     }
 }

@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+dependencies:
+  htmx.org:
+    specifier: ^1.9.7
+    version: 1.9.7
+
 devDependencies:
   autoprefixer:
     specifier: 10.4.16
@@ -555,6 +560,10 @@ packages:
     dependencies:
       function-bind: 1.1.2
     dev: true
+
+  /htmx.org@1.9.7:
+    resolution: {integrity: sha512-bHONSJ3WBtMG5Ex6xmC+t///rCKINrrPNeZ0Nq9cylVbzZ9ZGjWn1z60hripbqZeIM3WSpEATgm+MglDIK5WVQ==}
+    dev: false
 
   /inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}

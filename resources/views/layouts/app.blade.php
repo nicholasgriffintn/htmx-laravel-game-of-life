@@ -7,14 +7,12 @@
         
         <title>{{ config('app.name', 'Game of Life with Laravel and htmlx') }}</title>
 
-        <!-- Scripts -->
+        <!-- Styles -->
         @vite(['resources/css/app.css'])
 
         <style>
             [x-cloak] { display: none !important; }
         </style>
-
-        <script src="https://unpkg.com/htmx.org@1.9.6" integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni" crossorigin="anonymous"></script>
     </head>
     <body class="font-sans antialiased">
         <div
@@ -38,6 +36,13 @@
             </main>
         </div>
 
+        <!-- Scripts -->
         @vite('resources/js/app.js')
+        <script>
+            document.body.addEventListener('htmx:configRequest', (event) => {
+                console.log(event)
+                event.detail.headers['X-CSRF-Token'] = "{{ csrf_token() }}";
+             })
+        </script>
     </body>
 </html>
